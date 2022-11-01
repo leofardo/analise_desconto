@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+    <html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./style.css">
+        
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+        <title>Analise de desconto</title>
+    </head>
+
+    <body>
+
+
+        <div class="container">
+            <div class=" text-center mt-5 ">
+    
+                <h1 >Análise de desconto</h1>
+                                   
+            </div>
+    
+        
+        <div class="row ">
+          <div class="col-lg-7 mx-auto">
+                <div class="card mt-2 mx-auto p-4 bg-light">
+                    <div class="card-body bg-light">
+
+                        <div class = "container">
+
+                            <form id="contact-form" role="form">                            
+                                <div class="controls">
+
+                                    <div class="mt-3 mb-3 ">
+    
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="form_need"> Opções para desconto </label>
+                                                <select id="form_need" name="opcoesDesconto" class="form-control" required="required">
+                                                    <option value="null" selected disabled>--Selecione sua opção--</option>
+                                                    <option value="semacesso" >SEM ACESSO</option>
+                                                    <option value="lentidao" >LENTIDÃO/OSCILAÇÃO</option>
+                                                    <option value="atraso" > ATRASO OS</option>
+                                                </select>                                                   
+                                            </div>
+                                        </div>
+                                                           
+                                    </div>
+                    
+                                        <div class="row mt-2">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="form_name">Data início *</label>
+                                                    <input id="form_name" type="date" name="data_inicio" class="form-control" min="">
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="form_lastname">Data fim*</label>
+                                                    <input id="form_lastname" type="date" name="data_fim" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-2">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="form_name">Hora início *</label>
+                                                    <input id="form_name" type="time" name="hora_inicio" class="form-control">
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="form_lastname">Hora fim*</label>
+                                                    <input id="form_lastname" type="time" name="hora_fim" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-2">
+                                            <div class="col-md-6" id="caixaFalhaAtraso">
+                                               <!-- gerado via javascript -->
+                                            </div>
+                                        </div>   
+
+                                    <div class="row">
+                                        <div class="col-md-12 mt-2">
+                                            <div class="form-group">
+                                                <label for="mensagem">Mensagem</label>
+                                                <textarea id="mensagem" name="message" class="form-control pt-1 pb-1" style="min-height: 180px;"></textarea>
+                                            </div>
+                    
+                                        </div>
+                                     
+                                        <div class="col-md-12">                                    
+                                            <input type="button" class="btn btn-success btn-send p-2 btn-block mt-3" value="Gerar Mensagem" onclick="msg.desconto()">                                                                                   
+                                            <input id="copiar" type="button" class="btn btn-primary p-2 btn-send btn-block mt-3" value="Copiar" onclick="copiarTexto();">                                                                                   
+                                        </div>
+                                        
+                            
+                                    </div>
+                        
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+                    <!-- /.8 -->
+    
+            </div>
+            <!-- /.row-->
+    
+        </div>
+    </div>
+    
+
+
+    <script src="./script.js"></script>    
+    </body>
+</html>
