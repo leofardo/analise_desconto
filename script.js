@@ -1,6 +1,8 @@
 class Mensagem{
     constructor(){
 
+        moment.locale('pt-br')
+
         var select = document.getElementById('form_need');
 
         select.addEventListener('change', function() {
@@ -44,7 +46,7 @@ class Mensagem{
                     txtAtraso.className = 'form-group mt-2'
 
                     let labelAtraso = document.createElement('label');
-                    labelAtraso.innerHTML = 'Quantidade dias em atraso'
+                    labelAtraso.innerHTML = 'Prazo O.S (dias)'
                     labelAtraso.setAttribute('for', 'form_name') 
 
                     let inputLabelAtraso = document.createElement('input');
@@ -72,30 +74,8 @@ class Mensagem{
 
         let msg_inicio;
 
-        let dataAtraso = data_fim;
 
-        let date1 = new Date(data_inicio.slice(0,4), data_inicio.slice(5,7),data_inicio.slice(8,10), hora_inicio.slice(0,2), hora_inicio.slice(3,5)),
-        date2 = new Date(data_fim.slice(0,4), data_fim.slice(5,7), data_fim.slice(8,10), hora_fim.slice(0,2), hora_fim.slice(3,5));
-
-        let diffMs = (date2 - date1);
-        let total_horas = (diffMs / (1000 * 60 * 60));
-
-        let data1Mes = date1.getMonth()
-
-        console.log(date1.getDate())
-
-        if(date1.getDate() == 1 && data1Mes == date2.getMonth()){
-            data1Mes = date1.getMonth() - 1
-        }
-
-        if(data1Mes == 1 || data1Mes == 3 || data1Mes == 5 || data1Mes == 7 || data1Mes == 8 || data1Mes == 10 || data1Mes == 0){
-            if(data1Mes != date2.getMonth() && data1Mes < date2.getMonth()){
-                total_horas = total_horas + 24
-                //
-            }
-        }
-
-
+        let dataAtraso = data_inicio
 
         data_inicio = data_inicio.split('-').reverse().join('-');
         data_fim = data_fim.split('-').reverse().join('-');
@@ -103,6 +83,14 @@ class Mensagem{
         data_inicio = data_inicio.replace(/-/g, '/');
         data_fim = data_fim.replace(/-/g, '/');
 
+
+        var data_inicio_string = `${data_inicio} ${hora_inicio}`;
+        var data_fim_string = `${data_fim} ${hora_fim}`;
+
+
+        var diff = moment(data_fim_string,"DD/MM/YYYY HH:mm:ss").diff(moment(data_inicio_string,"DD/MM/YYYY HH:mm:ss"));
+        const total_horas = moment.duration(diff).asHours();
+        
         
         if(opcoesDesconto == 'semacesso'){
 
@@ -139,53 +127,20 @@ class Mensagem{
             `TOTAL DE ${total_horas.toFixed(2)} HORAS COM O ACESSO LENTO/OSCILANDO DEVIDO À MANUTENÇÕES CORRETIVAS`
         }else if(opcoesDesconto = 'atraso'){
 
-            let qtdDiasAtraso = document.getElementsByName('number_id')[0].value
+            let prazo = parseInt(document.getElementsByName('number_id')[0].value)
 
-            let horario_fim_ms = ((hora_fim.slice(0,2) * 3600000) + (hora_fim.slice(3,5) * 60000))  
-            let hora_atraso_inicio = new Date(date1.getTime()).toLocaleString().slice(11, 16)
-            let horario_inicio_ms = ((hora_atraso_inicio.slice(0,2) * 3600000) + (hora_atraso_inicio.slice(3,5) * 60000))
+            let dataInicioAtraso = new Date(`${dataAtraso} 00:00:00`)
 
+            let data_inicio_atraso = moment(dataInicioAtraso).add(prazo, 'days').format('L')
 
-            let data_fim_atraso = new Date(dataAtraso.slice(0,4), dataAtraso.slice(5,7), dataAtraso.slice(8,10), hora_fim.slice(0,2), hora_fim.slice(3,5));
-            let data_inicio_atraso = new Date((data_fim_atraso.getTime()) - (((qtdDiasAtraso) * 24 * 60 * 60 * 1000) + horario_fim_ms - horario_inicio_ms))
+            let dataHoraInicioAtraso = `${data_inicio_atraso} ${hora_inicio}`
 
-
-            let diffMsAtraso = (data_fim_atraso - data_inicio_atraso);
-            let total_horas_atraso = (diffMsAtraso / (1000 * 60 * 60));
-            
-
-
-            let duasCasasData = data_inicio_atraso.getDate()
-            let duasCasasMes = data_inicio_atraso.getMonth()
-
-            if(duasCasasData < 9){
-                duasCasasData = "0" + duasCasasData
-            }
-
-
-            if(duasCasasMes == 1 || duasCasasMes == 3 || duasCasasMes == 5 || duasCasasMes == 7 || duasCasasMes == 8 || duasCasasMes == 10 || duasCasasMes == 0){
-               
-                if(data_inicio_atraso.getMonth() != date2.getMonth() && data_inicio_atraso.getMonth() < date2.getMonth()){
-                    // let diferenca_meses = date2.getMonth() - data_inicio_atraso.getMonth() 
-                    // console.log(diferenca_meses)
-
-                    total_horas_atraso = total_horas_atraso + 24
-                }
-
-            }
-
-            if(duasCasasMes < 9){
-                duasCasasMes = "0" + duasCasasMes
-            }
-
-
-            let data_atraso_nova = duasCasasData + "/" + duasCasasMes + "/" + data_inicio_atraso.getFullYear();
-
-
+            let diffAtraso = moment(data_fim_string,"DD/MM/YYYY HH:mm:ss").diff(moment(dataHoraInicioAtraso,"DD/MM/YYYY HH:mm:ss"));
+            const total_horas_atraso = moment.duration(diffAtraso).asHours();
 
             var mensagem = `> DESCONTO REFERENTE A ATRASO DA ORDEM DE SERVIÇO\n\n`+
 
-            `INICIO DO CALCULO: ${data_atraso_nova} ${hora_atraso_inicio}\n`+
+            `INICIO DO CALCULO: ${data_inicio_atraso} ${hora_inicio}\n`+
             `FINAL DO CALCULO: ${data_fim} ${hora_fim}\n\n`+
                                                             
             `TOTAL DE ${total_horas_atraso.toFixed(2)} HORAS DEVIDO AO ATRASO NA EXECUÇÃO DA O.S`
