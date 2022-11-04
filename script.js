@@ -121,8 +121,8 @@ class Mensagem{
 
             var mensagem = `${msg_inicio}\n\n`+
 
-            `SEM ACESSO DESDE: ${data_inicio} ${hora_inicio}\n`+
-            `VOLTOU DIA: ${data_fim} ${hora_fim}\n\n`+
+            `COM ACESSO LENTO DESDE: ${data_inicio} ${hora_inicio}\n`+
+            `NORMALIZOU: ${data_fim} ${hora_fim}\n\n`+
                                                             
             `TOTAL DE ${total_horas.toFixed(2)} HORAS COM O ACESSO LENTO/OSCILANDO DEVIDO À MANUTENÇÕES CORRETIVAS`
         }else if(opcoesDesconto = 'atraso'){
