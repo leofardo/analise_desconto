@@ -89,13 +89,27 @@ class Mensagem{
 
 
         var diff = moment(data_fim_string,"DD/MM/YYYY HH:mm:ss").diff(moment(data_inicio_string,"DD/MM/YYYY HH:mm:ss"));
-        let total_horas = moment.duration(diff).asHours();
+        let total_horas = (moment.duration(diff).asHours()).toFixed(2); // hora do calculo
+
+        let hora_separar = parseInt(total_horas.split('.')[0])
+        let min_separar = Math.round((parseInt(total_horas.split('.')[1]) * 0.60))
+       
+        if(hora_separar <= 9){
+            hora_separar = '0'+ hora_separar
+        }
+
+        if(min_separar <= 9){
+            min_separar = '0' + min_separar
+        }
+
+        let hora_real_conversao = `${hora_separar}:${min_separar}` //hora real 
+        
 
         let valor_cheio = document.getElementsByName('valor_mensalidade')[0].value
         let desconto_hora = valor_cheio/720
         
-        let desconto_semAcesso = total_horas * desconto_hora
-        let desconto_lentidao = desconto_semAcesso/2
+        let desconto_semAcesso = (total_horas * desconto_hora).toFixed(2)
+        let desconto_lentidao = (desconto_semAcesso/2).toFixed(2)
         
         if(opcoesDesconto == 'semacesso'){
 
@@ -112,8 +126,8 @@ class Mensagem{
             `SEM ACESSO DESDE: ${data_inicio} ${hora_inicio}\n`+
             `VOLTOU DIA: ${data_fim} ${hora_fim}\n\n`+
                                                             
-            `TOTAL DE ${total_horas.toFixed(2)} HORAS SEM ACESSO DEVIDO À MANUTENÇÕES CORRETIVAS\n`+
-            `VALOR DO DESCONTO: R$ ${desconto_semAcesso.toFixed(2)}`
+            `TOTAL DE ${hora_real_conversao} HORAS SEM ACESSO DEVIDO À MANUTENÇÕES CORRETIVAS\n`+
+            `VALOR DO DESCONTO: R$ ${desconto_semAcesso}`
 
         }else if( opcoesDesconto == 'lentidao'){
 
@@ -130,8 +144,8 @@ class Mensagem{
             `COM ACESSO LENTO DESDE: ${data_inicio} ${hora_inicio}\n`+
             `NORMALIZOU: ${data_fim} ${hora_fim}\n\n`+
                                                             
-            `TOTAL DE ${total_horas.toFixed(2)} HORAS COM O ACESSO LENTO/OSCILANDO DEVIDO À MANUTENÇÕES CORRETIVAS\n`+
-            `VALOR DO DESCONTO: R$ ${desconto_lentidao.toFixed(2)}`
+            `TOTAL DE ${hora_real_conversao} HORAS COM O ACESSO LENTO/OSCILANDO DEVIDO À MANUTENÇÕES CORRETIVAS\n`+
+            `VALOR DO DESCONTO: R$ ${desconto_lentidao}`
 
         }else if(opcoesDesconto = 'atraso'){
 
@@ -144,14 +158,35 @@ class Mensagem{
             let dataHoraInicioAtraso = `${data_inicio_atraso} ${hora_inicio}`
 
             let diffAtraso = moment(data_fim_string,"DD/MM/YYYY HH:mm:ss").diff(moment(dataHoraInicioAtraso,"DD/MM/YYYY HH:mm:ss"));
-            const total_horas_atraso = moment.duration(diffAtraso).asHours();
+            let total_horas_atraso = (moment.duration(diffAtraso).asHours()).toFixed(2); //hora calculo
+
+
+            let valor_cheio_atraso = document.getElementsByName('valor_mensalidade')[0].value
+            let desconto_hora_atraso = valor_cheio_atraso/720     
+            let desconto_atraso = (total_horas_atraso * desconto_hora_atraso).toFixed(2)
+
+
+            let hora_separar_atraso = parseInt(total_horas_atraso.split('.')[0])
+            let min_separar_atraso = Math.round((parseInt(total_horas_atraso.split('.')[1]) * 0.60))
+       
+            if(hora_separar_atraso <= 9 ){
+                hora_separar_atraso = '0'+ hora_separar_atraso
+            }
+
+            if(min_separar_atraso <= 9){
+                min_separar_atraso = '0' + min_separar_atraso
+            }
+
+            let hora_real_conversao_atraso = `${hora_separar_atraso}:${min_separar_atraso}` //hora real 
 
             var mensagem = `> DESCONTO REFERENTE A ATRASO DA ORDEM DE SERVIÇO\n\n`+
 
             `INICIO DO CALCULO: ${data_inicio_atraso} ${hora_inicio}\n`+
             `FINAL DO CALCULO: ${data_fim} ${hora_fim}\n\n`+
                                                             
-            `TOTAL DE ${total_horas_atraso.toFixed(2)} HORAS DEVIDO AO ATRASO NA EXECUÇÃO DA O.S`
+            `TOTAL DE ${hora_real_conversao_atraso} HORAS DEVIDO AO ATRASO NA EXECUÇÃO DA O.S\n`+
+            `VALOR DO DESCONTO: R$ ${desconto_atraso}`
+
 
         }
 
