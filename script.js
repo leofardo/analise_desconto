@@ -19,7 +19,7 @@ class Mensagem{
                 if(caixaFalhaAtraso.children.length == 0){
                     let txtFalhaId = document.createElement('div');
                     txtFalhaId.id = 'id_falha'
-                    txtFalhaId.className = 'form-group mt-2'
+                    txtFalhaId.className = 'form-group'
 
                     let labelFalhaId = document.createElement('label');
                     labelFalhaId.innerHTML = 'ID Falha opcional'
@@ -43,7 +43,7 @@ class Mensagem{
                 if(caixaFalhaAtraso.children.length == 0){
                     let txtAtraso= document.createElement('div');
                     txtAtraso.id = 'qtd_atraso'
-                    txtAtraso.className = 'form-group mt-2'
+                    txtAtraso.className = 'form-group'
 
                     let labelAtraso = document.createElement('label');
                     labelAtraso.innerHTML = 'Prazo O.S (dias)'
@@ -89,8 +89,13 @@ class Mensagem{
 
 
         var diff = moment(data_fim_string,"DD/MM/YYYY HH:mm:ss").diff(moment(data_inicio_string,"DD/MM/YYYY HH:mm:ss"));
-        const total_horas = moment.duration(diff).asHours();
+        let total_horas = moment.duration(diff).asHours();
+
+        let valor_cheio = document.getElementsByName('valor_mensalidade')[0].value
+        let desconto_hora = valor_cheio/720
         
+        let desconto_semAcesso = total_horas * desconto_hora
+        let desconto_lentidao = desconto_semAcesso/2
         
         if(opcoesDesconto == 'semacesso'){
 
@@ -107,7 +112,8 @@ class Mensagem{
             `SEM ACESSO DESDE: ${data_inicio} ${hora_inicio}\n`+
             `VOLTOU DIA: ${data_fim} ${hora_fim}\n\n`+
                                                             
-            `TOTAL DE ${total_horas.toFixed(2)} HORAS SEM ACESSO DEVIDO À MANUTENÇÕES CORRETIVAS`
+            `TOTAL DE ${total_horas.toFixed(2)} HORAS SEM ACESSO DEVIDO À MANUTENÇÕES CORRETIVAS\n`+
+            `VALOR DO DESCONTO: R$ ${desconto_semAcesso.toFixed(2)}`
 
         }else if( opcoesDesconto == 'lentidao'){
 
@@ -124,7 +130,9 @@ class Mensagem{
             `COM ACESSO LENTO DESDE: ${data_inicio} ${hora_inicio}\n`+
             `NORMALIZOU: ${data_fim} ${hora_fim}\n\n`+
                                                             
-            `TOTAL DE ${total_horas.toFixed(2)} HORAS COM O ACESSO LENTO/OSCILANDO DEVIDO À MANUTENÇÕES CORRETIVAS`
+            `TOTAL DE ${total_horas.toFixed(2)} HORAS COM O ACESSO LENTO/OSCILANDO DEVIDO À MANUTENÇÕES CORRETIVAS\n`+
+            `VALOR DO DESCONTO: R$ ${desconto_lentidao.toFixed(2)}`
+
         }else if(opcoesDesconto = 'atraso'){
 
             let prazo = parseInt(document.getElementsByName('number_id')[0].value)
