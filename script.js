@@ -3,8 +3,6 @@ class Mensagem{
 
         moment.locale('pt-br')
 
-        document.location.reload(false);
-
         var select = document.getElementById('form_need');
 
         select.addEventListener('change', function() {
