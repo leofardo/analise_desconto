@@ -88,7 +88,7 @@ class Mensagem{
         var data_fim_string = `${data_fim} ${hora_fim}`;
 
 
-        if(moment(data_fim_string)._i >= moment(data_inicio_string)._i){
+        // if(moment(data_fim_string)._i >= moment(data_inicio_string)._i){
 
             var diff = moment(data_fim_string,"DD/MM/YYYY HH:mm:ss").diff(moment(data_inicio_string,"DD/MM/YYYY HH:mm:ss"));
             let total_horas = (moment.duration(diff).asHours()).toFixed(2); // hora do calculo
@@ -202,9 +202,9 @@ class Mensagem{
                     alert('Por favor, implemente os dias de atraso')
                 }
             }
-        }else{
-            alert('Data/hora fim é menor que a data/hora início, por favor corrigir')
-        }
+        // }else{
+            // alert('Data/hora fim é menor que a data/hora início, por favor corrigir')
+        // }
 
 
 
