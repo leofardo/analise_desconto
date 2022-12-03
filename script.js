@@ -92,6 +92,7 @@ class Mensagem{
              
     }
 
+
     desconto(){
 
 
@@ -205,6 +206,7 @@ class Mensagem{
                     }
 
                     if(tipo_prazo == 'corrido'){
+
                         let dataInicioAtraso = new Date(`${dataAtraso} 00:00:00`)
 
                         //TIPO CORRIDO
@@ -217,12 +219,16 @@ class Mensagem{
 
                         this.calculoAtrasoOs(data_inicio_atraso, total_horas_atraso, hora_inicio, hora_fim, data_fim)
 
+
                     }else if(tipo_prazo == 'uteis'){
 
                         let data_fim = document.getElementsByName('data_fim')[0].value
 
                         let dataInicioAtraso = new Date(`${dataAtraso} 00:00:00`)
                         let dataFimAtraso = new Date(`${data_fim} 00:00:00`)
+
+                        let data_inicio_atraso_corridos = moment(dataInicioAtraso).add(dias_os, 'days')
+
                         
                         console.log('data inicio: ' + dataInicioAtraso)
                         console.log('data fim: ' + dataFimAtraso)
@@ -235,15 +241,15 @@ class Mensagem{
                         // CALCULAR OS DIAS UTEIS
 
                         let diasUteis = 0
-                        let diasTotal = diffAtrasoDays + 1
+                        let diasTotal = diffAtrasoDays //+ 1
 
                         let diasNaoUteis = []
 
+
                         for (let i = 0; i <= diffAtrasoDays; i++) {
 
+                            let data_inicio_atraso_moment = moment(dataInicioAtraso).add(i, 'days')
                             let data_inicio_atraso = moment(dataInicioAtraso).add(i, 'days').format('L')
-
-                            console.log(`dia ${i}: ${data_inicio_atraso}`)
 
                             data_inicio_atraso = data_inicio_atraso.split('/').reverse().join('/');
                             data_inicio_atraso = data_inicio_atraso.replace(/\//g, '-'); //trocando o "/" por "-"
@@ -254,19 +260,39 @@ class Mensagem{
                                 diaDasemana = 0
                             }
 
-                            if (diaDasemana !== 0 && diaDasemana !== 6) {
-                                diasUteis += 1
-                            }else{
-                                diasNaoUteis.push([data_inicio_atraso, diaDasemana])
+                            if(data_inicio_atraso_moment <= data_inicio_atraso_corridos){
+    
+                                if (diaDasemana !== 0 && diaDasemana !== 6) {
+                                    diasUteis += 1
+                                }else{
+                                    diasNaoUteis.push([data_inicio_atraso, diaDasemana])                                   
+                                }
+
                             }
+
+                            if(diaDasemana === 6 || diaDasemana === 0){
+                                console.log(`dia ${i}: ${data_inicio_atraso} FIM DE SEMANA`)
+                            }else{
+                                console.log(`dia ${i}: ${data_inicio_atraso}`)
+                            } 
+                            
                         }
 
-                        let diasCalculo = diasTotal - diasUteis
+                        let diasCalculo = dias_os - diasUteis + 1 //parei aq
 
                         //domingo = 0 e sabado = 6 no getDay
 
 
                         let dias_prazo_novo = dias_os + diasCalculo
+
+                        console.log('Prazo OS: ' + dias_os)
+                        console.log('Qtd dias nao uteis do prazo: ' + diasCalculo)
+                        // console.log('Qtd dias uteis do prazo: ' + diasUteis)
+                        console.log('Total geral dias: ' + diasTotal)
+                        console.log('--------------------')
+                        console.log('Dias não uteis do prazo de ' + dias_os + ' dias abaixo: ')
+                        console.log(diasNaoUteis)
+
 
 
                         //TIPO UTEIS (MESMAS VARIAVEWIS DO CORRIDO POREM COM NOMES DIFERENTES)
@@ -335,7 +361,7 @@ class Mensagem{
                 `INICIO DO CALCULO: ${data_inicio_atraso} ${hora_inicio}\n`+
                 `FINAL DO CALCULO: ${data_fim} ${hora_fim}\n\n`+
 
-                `${diasCortados} DIAS CORTADOS DO CALCULO POR NÃO SEREM DIAS UTEIS\n\n`+ 
+                `${diasCortados} DIAS ADICIONADOS NO PRAZO POR NÃO SEREM DIAS UTEIS\n\n`+ 
                                                             
                 `TOTAL DE ${hora_real_conversao_atraso} HORAS UTEIS DEVIDO AO ATRASO NA EXECUÇÃO DA O.S\n`+
                 `VALOR DO DESCONTO: R$ ${desconto_atraso}`
